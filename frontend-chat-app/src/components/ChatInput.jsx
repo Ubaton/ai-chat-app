@@ -32,6 +32,10 @@ const ChatInput = ({ onSubmit }) => {
           <Send size={25} color="#fff" />
         </button>
       </form>
+      <p className="mt-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+        Lumin is an AI assistant and may occasionally provide inaccurate
+        information.
+      </p>
     </div>
   );
 };
