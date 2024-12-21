@@ -20,9 +20,12 @@ const ChatResponse = ({ response }) => {
     : parsedResponse;
 
   return (
-    <div className="container mt-20 mx-auto max-w-2xl p-4">
+    <div className="container mt-20 mx-auto max-w-5xl p-4">
       {responseData.candidates?.map((candidate, index) => (
-        <div key={index} className="bg-zinc-500 rounded-lg shadow-lg p-6 mb-4">
+        <div
+          key={index}
+          className="bg-zinc-600 rounded-lg shadow-lg p-6 mb-4 max-w-5xl mx-auto"
+        >
           <div className="prose">
             <p className="text-zinc-50 whitespace-pre-wrap">
               {candidate.content?.parts?.[0]?.text}
