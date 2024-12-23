@@ -11,8 +11,8 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handelQuestionSubmit = async (question) => {
-    setLoading(true);
     setReponse(null);
+    setLoading(true); // Set loading to true when fetching starts
     try {
       const apiResponse = await fetchChatResponse(question);
       setReponse(apiResponse);
@@ -20,7 +20,7 @@ function App() {
       toast.error("Failed to get response");
       console.error("Failed to get response", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading to false when fetching ends
     }
   };
 
@@ -33,12 +33,14 @@ function App() {
         }`}
       >
         <div className="flex-1">
-          <ChatResponse response={response} />
+          <ChatResponse response={response} loading={loading} />{" "}
+          {/* Pass loading state to ChatResponse */}
         </div>
-        <div className="w-full max-w-4xl px-4 mb-4">
+        <div className="fixed bottom-0 w-full max-w-4xl px-4 mb-4 z-10">
           <ChatInput onSubmit={handelQuestionSubmit} />
         </div>
       </main>
+      <div className="fixed bottom-0 left-0 right-0 w-full bg-zinc-700 h-[96px]"></div>
     </div>
   );
 }
