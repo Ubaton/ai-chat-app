@@ -18,7 +18,7 @@ const ChatInput = ({ onSubmit }) => {
         <div className="w-full">
           <input
             type="text"
-            className="p-2 rounded-full w-full px-4 bg-zinc-600"
+            className="p-2 rounded-full w-full px-4 bg-zinc-700 text-white"
             id="question"
             placeholder="Message Lumin"
             value={question}

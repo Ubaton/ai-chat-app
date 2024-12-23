@@ -50,7 +50,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
     <div className="fixed inset-y-0 left-0 z-50 flex">
       <div
         className={`
-          h-screen bg-white dark:bg-zinc-800 transition-all duration-300 ease-in-out
+          h-screen bg-white dark:bg-zinc-900 transition-all duration-300 ease-in-out
           ${isOpen ? "w-64" : "w-20"}
           flex flex-col justify-between rounded-r-2xl
         `}
