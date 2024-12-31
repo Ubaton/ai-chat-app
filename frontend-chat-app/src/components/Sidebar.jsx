@@ -3,39 +3,12 @@ import {
   Logout,
   PanelLeftClose,
   PanelRightClose,
+  EditOne,
 } from "@mynaui/icons-react";
 import React, { useState } from "react";
 import LuminLogo from "../assets/Lumin.svg";
 
-const Sidebar = ({ isOpen, onToggle }) => {
-  // Dummy chat history data
-  const [history] = useState([
-    {
-      id: 1,
-      title: "Project Discussion",
-      date: "Today, 2:30 PM",
-      preview: "Discussion about the new features...",
-    },
-    {
-      id: 2,
-      title: "Bug Report Analysis",
-      date: "Today, 11:20 AM",
-      preview: "Investigating the login issue...",
-    },
-    {
-      id: 3,
-      title: "Team Meeting Notes",
-      date: "Yesterday, 4:15 PM",
-      preview: "Weekly sprint planning discussion...",
-    },
-    {
-      id: 4,
-      title: "Client Feedback",
-      date: "Yesterday, 10:00 AM",
-      preview: "Review of the latest deployment...",
-    },
-  ]);
-
+const Sidebar = ({ isOpen, onToggle, chatHistory }) => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const menuItems = [
@@ -49,11 +22,9 @@ const Sidebar = ({ isOpen, onToggle }) => {
   return (
     <div className="fixed inset-y-0 left-0 z-50 flex">
       <div
-        className={`
-          h-screen bg-white dark:bg-zinc-900 transition-all duration-300 ease-in-out
-          ${isOpen ? "w-64" : "w-20"}
-          flex flex-col justify-between rounded-r-2xl
-        `}
+        className={`h-screen bg-white dark:bg-zinc-900 transition-all duration-300 ease-in-out ${
+          isOpen ? "w-64" : "w-20"
+        } flex flex-col justify-between rounded-r-2xl`}
       >
         {/* Header */}
         <div className="p-4">
@@ -69,17 +40,6 @@ const Sidebar = ({ isOpen, onToggle }) => {
               )}
             </button>
           </div>
-
-          {/* <div className="mt-4 flex items-center justify-center">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center">
-              <img src={LuminLogo} alt="Lumin  AI Logo" />
-            </div>
-            {isOpen && (
-              <span className="ml-3 text-xl font-semibold text-white">
-                Lumin
-              </span>
-            )}
-          </div> */}
         </div>
 
         {/* Navigation */}
@@ -89,32 +49,22 @@ const Sidebar = ({ isOpen, onToggle }) => {
               <li key={item.title}>
                 <button
                   onClick={item.action}
-                  className={`
-                    w-full flex items-center p-3 rounded-lg
-                    text-gray-600 dark:text-gray-300
-                    hover:bg-gray-100 dark:hover:bg-zinc-600
-                    transition-colors duration-200
-                    ${isOpen ? "justify-start" : "justify-center"}
-                  `}
+                  className={`w-full flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-600 transition-colors duration-200 ${
+                    isOpen ? "justify-start" : "justify-center"
+                  }`}
                 >
                   <span className="flex-shrink-0">{item.icon}</span>
                   {isOpen && <span className="ml-3">{item.title}</span>}
                 </button>
                 {isHistoryOpen && isOpen && (
                   <ul className="mt-2 space-y-2">
-                    {history.map((chat) => (
+                    {chatHistory.map((chat, index) => (
                       <li
-                        key={chat.id}
+                        key={index}
                         className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
                       >
                         <div className="text-sm text-gray-300">
-                          <div className="font-medium">{chat.title}</div>
-                          <div className="text-xs text-gray-400">
-                            {chat.date}
-                          </div>
-                          <div className="text-xs text-gray-500 truncate mt-1">
-                            {chat.preview}
-                          </div>
+                          <div className="font-medium">{chat.name}</div>
                         </div>
                       </li>
                     ))}
@@ -128,13 +78,9 @@ const Sidebar = ({ isOpen, onToggle }) => {
         {/* Footer */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
           <button
-            className={`
-              w-full flex items-center p-3 rounded-lg
-              text-gray-600 dark:text-gray-300
-              hover:bg-gray-100 dark:hover:bg-zinc-600
-              transition-colors duration-200
-              ${isOpen ? "justify-start" : "justify-center"}
-            `}
+            className={`w-full flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-600 transition-colors duration-200 ${
+              isOpen ? "justify-start" : "justify-center"
+            }`}
           >
             <Logout size={24} />
             {isOpen && <span className="ml-3">Logout</span>}
@@ -149,6 +95,12 @@ const Sidebar = ({ isOpen, onToggle }) => {
           onClick={() => onToggle(false)}
         />
       )}
+
+      <div className="mt-4">
+        <button className="p-3 rounded-r-full bg-violet-600">
+          <EditOne color="#fff" />
+        </button>
+      </div>
     </div>
   );
 };

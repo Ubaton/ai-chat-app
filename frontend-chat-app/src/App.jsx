@@ -9,9 +9,10 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
 
   const handleQuestionSubmit = async (question) => {
-    // Immediately add user message
+    // User message
     const userMessage = {
       type: "user",
       content: question,
@@ -27,7 +28,15 @@ function App() {
         content: apiResponse,
         timestamp: new Date().toISOString(),
       };
+      // AI message response
       setMessages((prev) => [...prev, aiMessage]);
+
+      // Generate chat name based on the first question
+      const chatName = `Chat about: ${question}`;
+      setChatHistory((prev) => [
+        ...prev,
+        { name: chatName, messages: [...messages, userMessage, aiMessage] },
+      ]);
     } catch (error) {
       toast.error("Failed to get response");
       console.error("Failed to get response", error);
@@ -38,7 +47,12 @@ function App() {
 
   return (
     <div className="flex min-h-screen bg-zinc-800 overflow-y-auto pb-24">
-      <Sidebar isOpen={isSidebarOpen} onToggle={setIsSidebarOpen} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onToggle={setIsSidebarOpen}
+        chatHistory={chatHistory}
+      />
+
       <main
         className={`flex-1 flex flex-col items-center justify-between transition-all duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-20"
