@@ -4,6 +4,7 @@ import ChatInput from "../ChatInput";
 import ChatResponse from "../ChatResponse";
 import { toast } from "sonner";
 import { fetchChatResponse } from "../../lib/api";
+import ProfileIcon from "../ui/ProfileIcon";
 
 function HomePage() {
   const [messages, setMessages] = useState([]);
@@ -52,6 +53,7 @@ function HomePage() {
         onToggle={setIsSidebarOpen}
         chatHistory={chatHistory}
       />
+      <ProfileIcon />
 
       <main
         className={`flex-1 flex flex-col items-center justify-between transition-all duration-300 ${

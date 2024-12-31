@@ -86,6 +86,7 @@ const Sidebar = ({ isOpen, onToggle, chatHistory }) => {
             <Star className="text-yellow-500" />
             <span className="flex flex-col">
               {isOpen && <span className="font-semibold ml-2">Free Plan</span>}
+
               {/* <p className="text-sm text-zinc-600 hover:text-zinc-400">
                 Tokens: <span className="font-medium">20,000</span>
               </p> */}
