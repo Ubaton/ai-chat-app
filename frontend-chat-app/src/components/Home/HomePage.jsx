@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Sidebar from "./components/Sidebar";
-import ChatInput from "./components/ChatInput";
-import ChatResponse from "./components/ChatResponse";
+import Sidebar from "../Sidebar";
+import ChatInput from "../ChatInput";
+import ChatResponse from "../ChatResponse";
 import { toast } from "sonner";
-import { fetchChatResponse } from "./lib/api";
+import { fetchChatResponse } from "../../lib/api";
 
-function App() {
+function HomePage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -77,4 +77,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;

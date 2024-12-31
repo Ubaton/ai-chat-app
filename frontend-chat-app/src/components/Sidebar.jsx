@@ -4,6 +4,7 @@ import {
   PanelLeftClose,
   PanelRightClose,
   EditOne,
+  Star,
 } from "@mynaui/icons-react";
 import React, { useState } from "react";
 import LuminLogo from "../assets/Lumin.svg";
@@ -78,12 +79,17 @@ const Sidebar = ({ isOpen, onToggle, chatHistory }) => {
         {/* Footer */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
           <button
-            className={`w-full flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-600 transition-colors duration-200 ${
+            className={`w-full flex items-center p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors duration-200 ${
               isOpen ? "justify-start" : "justify-center"
             }`}
           >
-            <Logout size={24} />
-            {isOpen && <span className="ml-3">Logout</span>}
+            <Star className="text-yellow-500" />
+            <span className="flex flex-col">
+              {isOpen && <span className="font-semibold ml-2">Free Plan</span>}
+              {/* <p className="text-sm text-zinc-600 hover:text-zinc-400">
+                Tokens: <span className="font-medium">20,000</span>
+              </p> */}
+            </span>
           </button>
         </div>
       </div>
