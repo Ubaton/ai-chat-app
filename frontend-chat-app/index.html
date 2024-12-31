@@ -1,17 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr">
   <head>
+    <!-- Character encoding and viewport -->
     <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/frontend-chat-app/src/assets/Lumin.svg"
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lumin AI</title>
+
+    <!-- Primary meta tags -->
+    <title>Lumin AI - Intelligent Chat Assistant</title>
+    <meta
+      name="description"
+      content="Lumin AI - Your intelligent chat assistant powered by advanced artificial intelligence. Experience smarter conversations today."
+    />
+    <meta name="author" content="Raymond Ngobeni" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://luminai.com" />
+    <meta property="og:title" content="Lumin AI - Intelligent Chat Assistant" />
+    <meta
+      property="og:description"
+      content="Your intelligent chat assistant powered by advanced artificial intelligence. Experience smarter conversations today."
+    />
+    <meta property="og:image" content="https://luminai.com/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://luminai.com" />
+    <meta
+      name="twitter:title"
+      content="Lumin AI - Intelligent Chat Assistant"
+    />
+    <meta
+      name="twitter:description"
+      content="Your intelligent chat assistant powered by advanced artificial intelligence. Experience smarter conversations today."
+    />
+    <meta
+      name="twitter:image"
+      content="https://luminai.com/twitter-image.jpg"
+    />
+
+    <!-- Favicon and Apple Touch Icon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/Lumin.svg" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+    <!-- Security headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Preload critical assets -->
+    <link
+      rel="preload"
+      href="/assets/Lumin.svg"
+      as="image"
+      type="image/svg+xml"
+    />
+    <link rel="preload" href="/src/styles/main.css" as="style" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+
+    <!-- Application manifest -->
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
+    <noscript>
+      <div style="padding: 20px; text-align: center; background-color: #ffebee">
+        <strong
+          >We're sorry but Lumin AI doesn't work properly without JavaScript
+          enabled. Please enable it to continue.</strong
+        >
+      </div>
+    </noscript>
+
     <div id="root"></div>
+
+    <!-- Application entry point -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

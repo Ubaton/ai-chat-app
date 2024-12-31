@@ -1,5 +1,6 @@
 import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import SettingsPage from "../components/routes/SettingsPage";
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
@@ -7,8 +8,8 @@ export const Route = createFileRoute("/settings")({
 
 function RouteComponent() {
   return (
-    <div className="flex min-h-screen justify-center items-center">
-      <h1>The Profile Page</h1>
-    </div>
+    <>
+      <SettingsPage />
+    </>
   );
 }
