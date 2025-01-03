@@ -36,11 +36,7 @@ const Profile = () => {
         className="fixed top-4 right-4 bg-zinc-800 h-12 w-12 rounded-full z-50 flex justify-center items-center cursor-pointer dropdown-toggle"
         onClick={toggleDropdown}
       >
-        <img
-          src="/public/Ray.jpg"
-          alt="Raymond Image"
-          className="rounded-full"
-        />
+        <img src="/Ray.jpg" alt="Raymond Image" className="rounded-full" />
       </div>
       {isOpen && (
         <div className="absolute right-4 mt-[4.5rem] w-48 bg-zinc-900 rounded-lg shadow-lg z-50 dropdown-menu">

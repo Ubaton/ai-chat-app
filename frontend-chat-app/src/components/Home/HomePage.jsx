@@ -5,6 +5,7 @@ import ChatResponse from "../ChatResponse";
 import { toast } from "sonner";
 import { fetchChatResponse } from "../../lib/api";
 import ProfileIcon from "../ui/ProfileIcon";
+import { ChatMessages } from "@mynaui/icons-react";
 
 function HomePage() {
   const [messages, setMessages] = useState([]);
@@ -33,7 +34,12 @@ function HomePage() {
       setMessages((prev) => [...prev, aiMessage]);
 
       // Generate chat name based on the first question
-      const chatName = `Chat about: ${question}`;
+      const chatName = (
+        <span className="flex items-center justify-center gap-2">
+          <ChatMessages className="inline-block mr-1" />
+          {`${question}`}
+        </span>
+      );
       setChatHistory((prev) => [
         ...prev,
         { name: chatName, messages: [...messages, userMessage, aiMessage] },
