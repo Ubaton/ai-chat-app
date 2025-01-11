@@ -1,5 +1,7 @@
 import React from "react";
 import { SpinnerOne } from "@mynaui/icons-react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const ChatResponse = ({ response, userInput, loading }) => {
   if (!response && !userInput && !loading) {
@@ -22,6 +24,39 @@ const ChatResponse = ({ response, userInput, loading }) => {
       ? parsedResponse[0]
       : parsedResponse
     : null;
+
+  const renderContent = (content) => {
+    return content.split(/(```\w*[\s\S]*?```|`.*?`)/g).map((part, i) => {
+      // Match code block with or without language
+      const codeBlockMatch = part.match(/```(\w+)?\n([\s\S]*?)```/);
+      const inlineCodeMatch = part.match(/^`(.*?)`$/);
+
+      if (codeBlockMatch) {
+        const language = codeBlockMatch[1] || "plaintext";
+        const code = codeBlockMatch[2];
+        return (
+          <SyntaxHighlighter
+            key={i}
+            language={language}
+            style={solarizedlight}
+            showLineNumbers
+          >
+            {code}
+          </SyntaxHighlighter>
+        );
+      } else if (inlineCodeMatch) {
+        return (
+          <code
+            key={i}
+            className="bg-gray-200 px-1 py-0.5 rounded text-red-600"
+          >
+            {inlineCodeMatch[1]}
+          </code>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
 
   return (
     <div className="flex flex-col mt-4 mx-auto max-w-4xl px-4">
@@ -46,15 +81,7 @@ const ChatResponse = ({ response, userInput, loading }) => {
             >
               <div className="prose">
                 <p className="text-zinc-50 whitespace-pre-wrap">
-                  {candidate.content?.parts?.[0]?.text
-                    .split(/(\*\*.*?\*\*)/g)
-                    .map((part, i) =>
-                      part.match(/^\*\*.*\*\*$/) ? (
-                        <strong key={i}>{part.replace(/\*\*/g, "")}</strong>
-                      ) : (
-                        part
-                      )
-                    )}
+                  {renderContent(candidate.content?.parts?.[0]?.text || "")}
                 </p>
               </div>
               {responseData?.usageMetadata?.totalTokenCount && (
