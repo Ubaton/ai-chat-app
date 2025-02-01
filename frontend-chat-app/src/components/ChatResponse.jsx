@@ -1,7 +1,8 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { SpinnerOne } from "@mynaui/icons-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ShinyText from "./ui/ShinyText";
 
 const ChatResponse = ({ response, userInput, loading }) => {
   if (!response && !userInput && !loading) {
@@ -69,8 +70,9 @@ const ChatResponse = ({ response, userInput, loading }) => {
           </div>
         )}
         {loading && (
-          <div className="self-start flex items-center justify-center">
+          <div className="flex items-center justify-center self-start space-x-1">
             <SpinnerOne size={24} color="#fff" className="animate-spin" />
+            <ShinyText text="Thinking" speed={8} disabled={false} />
           </div>
         )}
         {responseData &&
@@ -94,6 +96,16 @@ const ChatResponse = ({ response, userInput, loading }) => {
       </div>
     </div>
   );
+};
+
+ChatResponse.propTypes = {
+  response: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  userInput: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 export default ChatResponse;
