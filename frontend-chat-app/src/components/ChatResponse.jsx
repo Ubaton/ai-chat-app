@@ -69,6 +69,96 @@ const CodeBlock = ({ code, language }) => {
   );
 };
 
+const FormattedText = ({ text }) => {
+  const renderFormattedText = (input) => {
+    // Clean up the input by removing multiple consecutive newlines
+    const cleanedInput = input.replace(/\n{3,}/g, "\n\n").trim();
+
+    // Split the text into paragraphs
+    const paragraphs = cleanedInput.split("\n\n");
+
+    return paragraphs.map((paragraph, index) => {
+      // Check if this paragraph contains bullet points
+      if (paragraph.includes("* ")) {
+        // Split into lines and filter out empty ones
+        const lines = paragraph
+          .split("\n")
+          .filter((line) => line.trim())
+          .map((line) => line.trim());
+
+        // Group related bullet points
+        const bulletGroups = [];
+        let currentGroup = [];
+
+        lines.forEach((line) => {
+          if (line.startsWith("*")) {
+            // If this is a single bullet with no content, skip it
+            if (line.trim() === "*") return;
+
+            // Start a new bullet point
+            const content = line.slice(1).trim();
+            if (content) {
+              currentGroup.push(content);
+            }
+          } else if (currentGroup.length > 0) {
+            // Add this line to the last bullet point
+            const lastIndex = currentGroup.length - 1;
+            currentGroup[lastIndex] = `${currentGroup[lastIndex]} ${line}`;
+          }
+        });
+
+        if (currentGroup.length > 0) {
+          bulletGroups.push(currentGroup);
+        }
+
+        return bulletGroups.map((group, groupIndex) => (
+          <ul
+            key={`${index}-${groupIndex}`}
+            className="list-disc list-inside space-y-2 mt-2 mb-2 text-zinc-50"
+          >
+            {group.map((item, itemIndex) => (
+              <li
+                key={`${index}-${groupIndex}-${itemIndex}`}
+                className="text-zinc-50"
+              >
+                {renderBoldText(item)}
+              </li>
+            ))}
+          </ul>
+        ));
+      } else {
+        // Regular paragraph
+        return (
+          <p key={index} className="mb-2">
+            {renderBoldText(paragraph)}
+          </p>
+        );
+      }
+    });
+  };
+
+  const renderBoldText = (text) => {
+    // Handle both ** and **** patterns for bold text
+    return text
+      .split(/(\*\*\*\*[^*]+\*\*|\*\*[^*]+\*\*)/g)
+      .map((part, index) => {
+        if (
+          (part.startsWith("**") && part.endsWith("**")) ||
+          (part.startsWith("****") && part.endsWith("**"))
+        ) {
+          return (
+            <span key={index} className="font-bold text-zinc-50">
+              {part.replace(/\*\*/g, "")}
+            </span>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      });
+  };
+
+  return <div className="space-y-1">{renderFormattedText(text)}</div>;
+};
+
 const ChatResponse = ({ response, userInput, loading }) => {
   if (!response && !userInput && !loading) {
     return null;
@@ -114,7 +204,7 @@ const ChatResponse = ({ response, userInput, loading }) => {
           </div>
         );
       }
-      return <span key={i}>{part}</span>;
+      return <FormattedText key={i} text={part} />;
     });
   };
 
@@ -141,9 +231,9 @@ const ChatResponse = ({ response, userInput, loading }) => {
               className="bg-zinc-700 rounded-2xl shadow-lg p-6 mb-4 max-w-3xl self-start"
             >
               <div className="prose">
-                <p className="text-zinc-50 whitespace-pre-wrap">
+                <div className="text-zinc-50">
                   {renderContent(candidate.content?.parts?.[0]?.text || "")}
-                </p>
+                </div>
               </div>
               {responseData?.usageMetadata?.totalTokenCount && (
                 <div className="text-right text-zinc-300 text-sm mt-2">
@@ -155,6 +245,10 @@ const ChatResponse = ({ response, userInput, loading }) => {
       </div>
     </div>
   );
+};
+
+FormattedText.propTypes = {
+  text: PropTypes.string.isRequired,
 };
 
 CopyableText.propTypes = {
