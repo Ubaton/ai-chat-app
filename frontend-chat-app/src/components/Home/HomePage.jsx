@@ -59,7 +59,9 @@ function HomePage() {
         onToggle={setIsSidebarOpen}
         chatHistory={chatHistory}
       />
-      <ProfileIcon />
+      <div className="fixed top-1 right-1">
+        <ProfileIcon />
+      </div>
 
       <main
         className={`flex-1 flex flex-col items-center justify-between transition-all duration-300 ${

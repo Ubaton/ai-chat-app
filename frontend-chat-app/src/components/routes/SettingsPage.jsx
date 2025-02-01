@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   CogFour as Settings,
   User,
@@ -8,6 +8,12 @@ import {
   Lock,
 } from "@mynaui/icons-react";
 import { Link } from "@tanstack/react-router";
+import SpeechSettings from "../Setting/SpeechSettings";
+import DataSettings from "../Setting/DataSettings";
+import BuilderSettings from "../Setting/BuilderSettings";
+import ConnectedApps from "../Setting/ConnectedApps";
+import SecuritySettings from "../Setting/SecuritySettings";
+import PersonalizationSettings from "../Setting/PersonalizationSettings";
 
 const SettingsPage = () => {
   const [currentSection, setCurrentSection] = useState("general");
@@ -56,23 +62,21 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="flex justify-center bg-zinc-800 text-white p-8 min-h-screen">
-      <div className="flex flex-col justify-center w-full h-full">
-        <div className="flex justify-between items-center mb-6 w-full">
-          <h1 className="text-xl font-semibold">Settings</h1>
+    <div className="flex justify-center bg-gradient-to-br from-zinc-900 to-zinc-800 text-white p-8 min-h-screen">
+      <div className="flex flex-col w-full max-w-6xl backdrop-blur-lg bg-white/5 rounded-2xl p-6 shadow-2xl">
+        <div className="flex justify-between items-center mb-8 w-full border-b border-white/10 pb-4">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
+            Settings
+          </h1>
           <Link to="/">
-            <button
-              className="text-zinc-400 hover:text-white transition-colors"
-              onClick={() => console.log("Close settings")}
-            >
-              <span className="text-xl px-2">&times;</span>
+            <button className="text-zinc-400 hover:text-white transition-all transform hover:scale-110 duration-200">
+              <span className="text-2xl px-2">&times;</span>
             </button>
           </Link>
         </div>
 
         <div className="flex gap-8 w-full">
-          {/* Navigation Sidebar */}
-          <div className="w-64">
+          <div className="w-72 bg-black/20 rounded-xl p-4">
             <nav className="space-y-2">
               <NavItem
                 icon={<Settings className="w-5 h-5" />}
@@ -119,8 +123,7 @@ const SettingsPage = () => {
             </nav>
           </div>
 
-          {/* Settings Content */}
-          <div className="flex-1">{renderContent()}</div>
+          <div className="flex-1 bg-black/20 rounded-xl p-6">{renderContent()}</div>
         </div>
       </div>
     </div>
@@ -130,10 +133,10 @@ const SettingsPage = () => {
 const GeneralSettings = ({ settings, onChange }) => {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <span>Theme</span>
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Theme</span>
         <select
-          className="bg-transparent border border-zinc-700 rounded px-2 py-1"
+          className="bg-zinc-800/50 border border-violet-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-violet-500 transition-all duration-200"
           value={settings.theme}
           onChange={(e) => onChange("theme", e.target.value)}
         >
@@ -143,18 +146,18 @@ const GeneralSettings = ({ settings, onChange }) => {
         </select>
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Always show code when using data analyst</span>
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Show code in data analyst</span>
         <Toggle
           value={settings.showCode}
           onChange={(value) => onChange("showCode", value)}
         />
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Language</span>
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Language</span>
         <select
-          className="bg-transparent border border-zinc-700 rounded px-2 py-1"
+          className="bg-zinc-800/50 border border-violet-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-violet-500 transition-all duration-200"
           value={settings.language}
           onChange={(e) => onChange("language", e.target.value)}
         >
@@ -165,58 +168,30 @@ const GeneralSettings = ({ settings, onChange }) => {
         </select>
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Archived chats</span>
-        <button
-          onClick={() => console.log("Manage archives")}
-          className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 transition-colors"
-        >
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Archived chats</span>
+        <button className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105">
           Manage
         </button>
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Archive all chats</span>
-        <button
-          onClick={() => {
-            if (window.confirm("Are you sure you want to archive all chats?")) {
-              console.log("Archiving all chats");
-            }
-          }}
-          className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 transition-colors"
-        >
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Archive all chats</span>
+        <button className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105">
           Archive all
         </button>
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Delete all chats</span>
-        <button
-          onClick={() => {
-            if (
-              window.confirm(
-                "Are you sure you want to delete all chats? This action cannot be undone."
-              )
-            ) {
-              console.log("Deleting all chats");
-            }
-          }}
-          className="px-3 py-1 rounded bg-red-600/20 text-red-400 hover:bg-red-600/30 transition-colors"
-        >
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Delete all chats</span>
+        <button className="px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all duration-200 hover:scale-105">
           Delete all
         </button>
       </div>
 
-      <div className="flex justify-between items-center">
-        <span>Log out on this device</span>
-        <button
-          onClick={() => {
-            if (window.confirm("Are you sure you want to log out?")) {
-              console.log("Logging out");
-            }
-          }}
-          className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 transition-colors"
-        >
+      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
+        <span className="text-zinc-300">Log out</span>
+        <button className="px-4 py-2 rounded-lg bg-zinc-700/50 hover:bg-zinc-700 transition-all duration-200 hover:scale-105">
           Log out
         </button>
       </div>
@@ -224,77 +199,18 @@ const GeneralSettings = ({ settings, onChange }) => {
   );
 };
 
-const PersonalizationSettings = ({ settings, onChange }) => {
-  return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-semibold mb-4">Personalization</h2>
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <span>Email Notifications</span>
-          <Toggle
-            value={settings.emailNotifications}
-            onChange={(value) => onChange("emailNotifications", value)}
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <span>SMS Notifications</span>
-          <Toggle
-            value={settings.smsNotifications}
-            onChange={(value) => onChange("smsNotifications", value)}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SpeechSettings = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-semibold mb-4">Speech Settings</h2>
-    <p className="text-zinc-400">
-      Speech settings and controls will appear here.
-    </p>
-  </div>
-);
-
-const DataSettings = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-semibold mb-4">Data Controls</h2>
-    <p className="text-zinc-400">Data control settings will appear here.</p>
-  </div>
-);
-
-const BuilderSettings = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-semibold mb-4">Builder Profile</h2>
-    <p className="text-zinc-400">Builder profile settings will appear here.</p>
-  </div>
-);
-
-const ConnectedApps = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-semibold mb-4">Connected Apps</h2>
-    <p className="text-zinc-400">Connected apps will appear here.</p>
-  </div>
-);
-
-const SecuritySettings = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
-    <p className="text-zinc-400">Security settings will appear here.</p>
-  </div>
-);
-
 const NavItem = ({ icon, text, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-3 w-full p-2 rounded transition-colors ${
-        active ? "bg-zinc-800" : "hover:bg-zinc-800/50"
+      className={`flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-200 ${
+        active
+          ? "bg-violet-500/20 text-violet-400"
+          : "hover:bg-white/5 text-zinc-400 hover:text-white"
       }`}
     >
       {icon}
-      <span className="text-sm">{text}</span>
+      <span className="text-sm font-medium">{text}</span>
     </button>
   );
 };
@@ -302,14 +218,14 @@ const NavItem = ({ icon, text, active = false, onClick }) => {
 const Toggle = ({ value, onChange }) => {
   return (
     <button
-      className={`w-12 h-6 rounded-full p-1 transition-colors ${
-        value ? "bg-violet-500" : "bg-zinc-600"
+      className={`w-14 h-7 rounded-full p-1 transition-all duration-300 ${
+        value ? "bg-violet-500" : "bg-zinc-700"
       }`}
       onClick={() => onChange(!value)}
     >
       <div
-        className={`w-4 h-4 bg-white rounded-full transition-transform ${
-          value ? "translate-x-6" : "translate-x-0"
+        className={`w-5 h-5 bg-white rounded-full shadow-lg transform transition-transform duration-300 ${
+          value ? "translate-x-7" : "translate-x-0"
         }`}
       />
     </button>
