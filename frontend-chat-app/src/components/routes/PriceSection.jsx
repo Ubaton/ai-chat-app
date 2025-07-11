@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Check, ArrowLeft } from "@mynaui/icons-react";
 import { Link } from "@tanstack/react-router";
 

@@ -9,6 +9,7 @@ import {
   Lock,
 } from "@mynaui/icons-react";
 import { Link } from "@tanstack/react-router";
+import { useSettings } from "../../context/SettingsContext";
 import SpeechSettings from "../Setting/SpeechSettings";
 import DataSettings from "../Setting/DataSettings";
 import BuilderSettings from "../Setting/BuilderSettings";
@@ -68,6 +69,30 @@ NavItem.propTypes = {
 
 // GeneralSettings component
 const GeneralSettings = ({ settings, onChange }) => {
+  const { deleteAllChats, archiveAllChats, logout } = useSettings();
+
+  const handleDeleteAll = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete all chats? This action cannot be undone."
+      )
+    ) {
+      deleteAllChats();
+    }
+  };
+
+  const handleArchiveAll = () => {
+    if (window.confirm("Are you sure you want to archive all chats?")) {
+      archiveAllChats();
+    }
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      logout();
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
@@ -107,12 +132,14 @@ const GeneralSettings = ({ settings, onChange }) => {
 
       <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
         <span className="text-zinc-300">Archived chats</span>
-        <button
-          type="button"
-          className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105"
-        >
-          Manage
-        </button>
+        <Link to="/archived">
+          <button
+            type="button"
+            className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105"
+          >
+            Manage
+          </button>
+        </Link>
       </div>
 
       <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
@@ -120,6 +147,7 @@ const GeneralSettings = ({ settings, onChange }) => {
         <button
           type="button"
           className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105"
+          onClick={handleArchiveAll}
         >
           Archive all
         </button>
@@ -130,6 +158,7 @@ const GeneralSettings = ({ settings, onChange }) => {
         <button
           type="button"
           className="px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all duration-200 hover:scale-105"
+          onClick={handleDeleteAll}
         >
           Delete all
         </button>
@@ -140,6 +169,7 @@ const GeneralSettings = ({ settings, onChange }) => {
         <button
           type="button"
           className="px-4 py-2 rounded-lg bg-zinc-700/50 hover:bg-zinc-700 transition-all duration-200 hover:scale-105"
+          onClick={handleLogout}
         >
           Log out
         </button>
@@ -162,16 +192,10 @@ GeneralSettings.propTypes = {
 // Main SettingsPage component
 const SettingsPage = () => {
   const [currentSection, setCurrentSection] = useState("general");
-  const [settings, setSettings] = useState({
-    theme: "system",
-    showCode: true,
-    language: "auto-detect",
-    emailNotifications: true,
-    smsNotifications: false,
-  });
+  const { settings, updateSettings } = useSettings();
 
   const handleSettingChange = (key, value) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    updateSettings(key, value);
   };
 
   const renderContent = () => {
@@ -183,22 +207,53 @@ const SettingsPage = () => {
       case "personalization":
         return (
           <PersonalizationSettings
-            settings={settings}
-            onChange={handleSettingChange}
+            settings={settings.personalization}
+            onChange={(key, value) =>
+              updateSettings("personalization", {
+                ...settings.personalization,
+                [key]: value,
+              })
+            }
           />
         );
       case "speech":
         return (
-          <SpeechSettings settings={settings} onChange={handleSettingChange} />
+          <SpeechSettings
+            settings={settings.speech}
+            onChange={(key, value) =>
+              updateSettings("speech", { ...settings.speech, [key]: value })
+            }
+          />
         );
       case "data":
-        return <DataSettings />;
+        return (
+          <DataSettings
+            settings={settings.data}
+            onChange={(key, value) =>
+              updateSettings("data", { ...settings.data, [key]: value })
+            }
+          />
+        );
       case "builder":
-        return <BuilderSettings />;
+        return (
+          <BuilderSettings
+            settings={settings.builder}
+            onChange={(key, value) =>
+              updateSettings("builder", { ...settings.builder, [key]: value })
+            }
+          />
+        );
       case "apps":
         return <ConnectedApps />;
       case "security":
-        return <SecuritySettings />;
+        return (
+          <SecuritySettings
+            settings={settings.security}
+            onChange={(key, value) =>
+              updateSettings("security", { ...settings.security, [key]: value })
+            }
+          />
+        );
       default:
         return (
           <GeneralSettings settings={settings} onChange={handleSettingChange} />
