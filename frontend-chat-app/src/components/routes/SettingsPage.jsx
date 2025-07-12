@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import {
   CogFour as Settings,
@@ -7,54 +7,35 @@ import {
   Database,
   Grid,
   Lock,
+  X,
 } from "@mynaui/icons-react";
 import { Link } from "@tanstack/react-router";
-import { useSettings } from "../../context/SettingsContext";
 import SpeechSettings from "../Setting/SpeechSettings";
 import DataSettings from "../Setting/DataSettings";
 import BuilderSettings from "../Setting/BuilderSettings";
 import ConnectedApps from "../Setting/ConnectedApps";
 import SecuritySettings from "../Setting/SecuritySettings";
 import PersonalizationSettings from "../Setting/PersonalizationSettings";
+import LuminLog from "../../../public/Lumin.png";
+import SettingsContext from "../../context/SettingsContext";
 
-// Toggle component with proper prop types
-const Toggle = ({ value, onChange }) => {
-  return (
-    <button
-      className={`w-14 h-7 rounded-full p-1 transition-all duration-300 ${
-        value ? "bg-violet-500" : "bg-zinc-700"
-      }`}
-      onClick={() => onChange(!value)}
-      type="button"
-      aria-pressed={value}
-    >
-      <div
-        className={`w-5 h-5 bg-white rounded-full shadow-lg transform transition-transform duration-300 ${
-          value ? "translate-x-7" : "translate-x-0"
-        }`}
-      />
-    </button>
-  );
-};
-
-Toggle.propTypes = {
-  value: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-// NavItem component with complete prop types
+// NavItem component with updated styling to match HomePage
 const NavItem = ({ icon, text, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
       type="button"
-      className={`flex items-center gap-3 w-full p-3 rounded-lg transition-all duration-200 ${
+      className={`flex items-center gap-3 w-full p-3 rounded-xl transition-all duration-300 ${
         active
-          ? "bg-violet-500/20 text-violet-400"
-          : "hover:bg-white/5 text-zinc-400 hover:text-white"
+          ? "bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-400 border border-blue-500/30"
+          : "hover:bg-slate-700/50 text-slate-400 hover:text-slate-300 border border-transparent"
       }`}
     >
-      {icon}
+      <div
+        className={`p-1 rounded-lg ${active ? "text-blue-400" : "text-slate-400"}`}
+      >
+        {icon}
+      </div>
       <span className="text-sm font-medium">{text}</span>
     </button>
   );
@@ -67,9 +48,10 @@ NavItem.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-// GeneralSettings component
+// GeneralSettings component with updated styling
 const GeneralSettings = ({ settings, onChange }) => {
-  const { deleteAllChats, archiveAllChats, logout } = useSettings();
+  const { deleteAllChats, archiveAllChats, logout } =
+    useContext(SettingsContext);
 
   const handleDeleteAll = () => {
     if (
@@ -94,11 +76,11 @@ const GeneralSettings = ({ settings, onChange }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Theme</span>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Theme</span>
         <select
-          className="bg-zinc-800/50 border border-violet-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-violet-500 transition-all duration-200"
+          className="bg-slate-800/80 border border-slate-600/50 rounded-lg px-4 py-2 text-slate-300 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
           value={settings.theme}
           onChange={(e) => onChange("theme", e.target.value)}
         >
@@ -108,18 +90,10 @@ const GeneralSettings = ({ settings, onChange }) => {
         </select>
       </div>
 
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Show code in data analyst</span>
-        <Toggle
-          value={settings.showCode}
-          onChange={(value) => onChange("showCode", value)}
-        />
-      </div>
-
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Language</span>
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Language</span>
         <select
-          className="bg-zinc-800/50 border border-violet-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-violet-500 transition-all duration-200"
+          className="bg-slate-800/80 border border-slate-600/50 rounded-lg px-4 py-2 text-slate-300 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
           value={settings.language}
           onChange={(e) => onChange("language", e.target.value)}
         >
@@ -130,45 +104,45 @@ const GeneralSettings = ({ settings, onChange }) => {
         </select>
       </div>
 
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Archived chats</span>
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Archived chats</span>
         <Link to="/archived">
           <button
             type="button"
-            className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-400 border border-blue-500/30 hover:from-blue-500/30 hover:to-purple-600/30 transition-all duration-300 hover:scale-105"
           >
             Manage
           </button>
         </Link>
       </div>
 
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Archive all chats</span>
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Archive all chats</span>
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 transition-all duration-200 hover:scale-105"
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-400 border border-blue-500/30 hover:from-blue-500/30 hover:to-purple-600/30 transition-all duration-300 hover:scale-105"
           onClick={handleArchiveAll}
         >
           Archive all
         </button>
       </div>
 
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Delete all chats</span>
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-red-500/30 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Delete all chats</span>
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all duration-200 hover:scale-105"
+          className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all duration-300 hover:scale-105"
           onClick={handleDeleteAll}
         >
           Delete all
         </button>
       </div>
 
-      <div className="flex justify-between items-center p-4 hover:bg-white/5 rounded-lg transition-all duration-200">
-        <span className="text-zinc-300">Log out</span>
+      <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300">
+        <span className="text-slate-300 font-medium">Log out</span>
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-zinc-700/50 hover:bg-zinc-700 transition-all duration-200 hover:scale-105"
+          className="px-4 py-2 rounded-lg bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:bg-slate-700 hover:text-white transition-all duration-300 hover:scale-105"
           onClick={handleLogout}
         >
           Log out
@@ -189,10 +163,10 @@ GeneralSettings.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-// Main SettingsPage component
+// Main SettingsPage component with updated styling to match HomePage
 const SettingsPage = () => {
   const [currentSection, setCurrentSection] = useState("general");
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings } = useContext(SettingsContext);
 
   const handleSettingChange = (key, value) => {
     updateSettings(key, value);
@@ -262,75 +236,120 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="flex justify-center bg-gradient-to-br from-zinc-900 to-zinc-800 text-white p-8 min-h-screen">
-      <div className="flex flex-col w-full max-w-full backdrop-blur-lg bg-white/5 rounded-2xl p-6 shadow-2xl">
-        <div className="flex justify-between items-center mb-8 w-full border-b border-white/10 pb-4">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
-            Settings
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+      {/* Background Elements - matching HomePage */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+
+      {/* Header - matching HomePage header */}
+      <header className="fixed top-0 right-0 left-0 z-50">
+        <div className="flex items-center justify-between px-6 py-4 bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
+              <img src={LuminLog} alt="Lumin Logo" className="h-6 w-6" />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-white">Settings</h1>
+              <p className="text-sm text-slate-400">
+                Configure your AI assistant
+              </p>
+            </div>
+          </div>
           <Link to="/">
             <button
               type="button"
-              className="text-zinc-400 hover:text-white transition-all transform hover:scale-110 duration-200"
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
             >
-              <span className="text-2xl px-2">&times;</span>
+              <X className="w-5 h-5" />
             </button>
           </Link>
         </div>
+      </header>
 
-        <div className="flex gap-8 w-full">
-          <div className="w-72 bg-black/20 rounded-xl p-4">
-            <nav className="space-y-2">
-              <NavItem
-                icon={<Settings className="w-5 h-5" />}
-                text="General"
-                active={currentSection === "general"}
-                onClick={() => setCurrentSection("general")}
-              />
-              <NavItem
-                icon={<User className="w-5 h-5" />}
-                text="Personalization"
-                active={currentSection === "personalization"}
-                onClick={() => setCurrentSection("personalization")}
-              />
-              <NavItem
-                icon={<Mic className="w-5 h-5" />}
-                text="Speech"
-                active={currentSection === "speech"}
-                onClick={() => setCurrentSection("speech")}
-              />
-              <NavItem
-                icon={<Database className="w-5 h-5" />}
-                text="Data controls"
-                active={currentSection === "data"}
-                onClick={() => setCurrentSection("data")}
-              />
-              <NavItem
-                icon={<Grid className="w-5 h-5" />}
-                text="Builder profile"
-                active={currentSection === "builder"}
-                onClick={() => setCurrentSection("builder")}
-              />
-              <NavItem
-                icon={<Grid className="w-5 h-5" />}
-                text="Connected apps"
-                active={currentSection === "apps"}
-                onClick={() => setCurrentSection("apps")}
-              />
-              <NavItem
-                icon={<Lock className="w-5 h-5" />}
-                text="Security"
-                active={currentSection === "security"}
-                onClick={() => setCurrentSection("security")}
-              />
-            </nav>
-          </div>
+      {/* Main Content */}
+      <main className="pt-20 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex gap-6 h-[calc(100vh-8rem)]">
+            {/* Sidebar Navigation */}
+            <div className="w-80 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
+              <nav className="space-y-2">
+                <NavItem
+                  icon={<Settings className="w-5 h-5" />}
+                  text="General"
+                  active={currentSection === "general"}
+                  onClick={() => setCurrentSection("general")}
+                />
+                <NavItem
+                  icon={<User className="w-5 h-5" />}
+                  text="Personalization"
+                  active={currentSection === "personalization"}
+                  onClick={() => setCurrentSection("personalization")}
+                />
+                <NavItem
+                  icon={<Mic className="w-5 h-5" />}
+                  text="Speech"
+                  active={currentSection === "speech"}
+                  onClick={() => setCurrentSection("speech")}
+                />
+                <NavItem
+                  icon={<Database className="w-5 h-5" />}
+                  text="Data controls"
+                  active={currentSection === "data"}
+                  onClick={() => setCurrentSection("data")}
+                />
+                <NavItem
+                  icon={<Grid className="w-5 h-5" />}
+                  text="Builder profile"
+                  active={currentSection === "builder"}
+                  onClick={() => setCurrentSection("builder")}
+                />
+                <NavItem
+                  icon={<Grid className="w-5 h-5" />}
+                  text="Connected apps"
+                  active={currentSection === "apps"}
+                  onClick={() => setCurrentSection("apps")}
+                />
+                <NavItem
+                  icon={<Lock className="w-5 h-5" />}
+                  text="Security"
+                  active={currentSection === "security"}
+                  onClick={() => setCurrentSection("security")}
+                />
+              </nav>
+            </div>
 
-          <div className="flex-1 bg-black/20 rounded-xl p-6">
-            {renderContent()}
+            {/* Content Area */}
+            <div className="flex-1 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 overflow-y-auto">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-white capitalize mb-2">
+                  {currentSection === "apps"
+                    ? "Connected Apps"
+                    : currentSection}
+                </h2>
+                <p className="text-slate-400">
+                  {currentSection === "general" &&
+                    "Manage your general preferences and account settings"}
+                  {currentSection === "personalization" &&
+                    "Customize your AI assistant's behavior and responses"}
+                  {currentSection === "speech" &&
+                    "Configure voice and speech recognition settings"}
+                  {currentSection === "data" &&
+                    "Control how your data is used and stored"}
+                  {currentSection === "builder" &&
+                    "Set up your builder profile and preferences"}
+                  {currentSection === "apps" &&
+                    "Manage your connected applications and integrations"}
+                  {currentSection === "security" &&
+                    "Configure security settings and privacy options"}
+                </p>
+              </div>
+
+              <div className="relative">{renderContent()}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

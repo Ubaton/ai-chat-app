@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mynaui/icons-react": "^0.3.3",
+    "@mynaui/icons-react": "^0.3.9",
     "@tanstack/react-router": "^1.92.11",
     "@tanstack/router": "^0.0.1-beta.53",
     "axios": "^1.7.9",

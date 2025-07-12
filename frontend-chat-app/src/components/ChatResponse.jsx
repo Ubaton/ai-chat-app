@@ -3,7 +3,8 @@ import { SpinnerOne, Copy } from "@mynaui/icons-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import ShinyText from "./ui/ShinyText";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
+import SettingsContext from "../context/SettingsContext";
 
 const CopyableText = ({ text }) => {
   const [copied, setCopied] = useState(false);
@@ -35,6 +36,7 @@ const CopyableText = ({ text }) => {
 
 const CodeBlock = ({ code, language }) => {
   const [copied, setCopied] = useState(false);
+  const { settings } = useContext(SettingsContext);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
@@ -47,7 +49,7 @@ const CodeBlock = ({ code, language }) => {
       <SyntaxHighlighter
         language={language}
         style={solarizedlight}
-        showLineNumbers
+        showLineNumbers={settings.personalization.showLineNumbers}
         customStyle={{ backgroundColor: "#2d3748", color: "#fff" }}
         className="bg-zinc-600 rounded-lg"
       >
@@ -160,6 +162,50 @@ const FormattedText = ({ text }) => {
 };
 
 const ChatResponse = ({ response, userInput, loading }) => {
+  const { settings } = useContext(SettingsContext);
+  const [voices, setVoices] = useState([]);
+
+  useEffect(() => {
+    if (settings.speech.enabled) {
+      const updateVoices = () => {
+        setVoices(window.speechSynthesis.getVoices());
+      };
+      updateVoices();
+      window.speechSynthesis.onvoiceschanged = updateVoices;
+      return () => {
+        window.speechSynthesis.onvoiceschanged = null;
+      };
+    }
+  }, [settings.speech.enabled]);
+
+  const speakResponse = useCallback(
+    (text) => {
+      if (settings.speech.enabled && settings.speech.autoPlay) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const selectedVoice = voices.find(
+          (v) => v.name === settings.speech.voice
+        );
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
+        utterance.rate = settings.speech.speed;
+        utterance.pitch = settings.speech.pitch;
+        window.speechSynthesis.speak(utterance);
+      }
+    },
+    [settings.speech, voices]
+  );
+
+  useEffect(() => {
+    if (response && !loading) {
+      const text =
+        typeof response === "string"
+          ? response
+          : response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      speakResponse(text);
+    }
+  }, [response, loading, speakResponse]);
+
   if (!response && !userInput && !loading) {
     return null;
   }
@@ -180,6 +226,13 @@ const ChatResponse = ({ response, userInput, loading }) => {
       ? parsedResponse[0]
       : parsedResponse
     : null;
+
+  const fontSize =
+    {
+      small: "text-sm",
+      medium: "text-base",
+      large: "text-lg",
+    }[settings.personalization.fontSize] || "text-base";
 
   const renderContent = (content) => {
     return content.split(/(```\w*[\s\S]*?```|`.*?`)/g).map((part, i) => {
@@ -209,7 +262,7 @@ const ChatResponse = ({ response, userInput, loading }) => {
   };
 
   return (
-    <div className="flex flex-col mt-4 mx-auto max-w-4xl px-4">
+    <div className={`flex flex-col mt-4 mx-auto max-w-4xl px-4 ${fontSize}`}>
       <div className="flex flex-col">
         {userInput && (
           <div className="bg-zinc-700 rounded-2xl shadow-lg p-2 mb-4 max-w-4xl self-end">
