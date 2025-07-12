@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import PropTypes from "prop-types";
 import LuminLogo from "../../public/Lumin.png";
+import { Link } from "@tanstack/react-router";
 
 const Sidebar = ({ isOpen, onToggle, chatHistory }) => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -124,21 +125,25 @@ const Sidebar = ({ isOpen, onToggle, chatHistory }) => {
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-700/50">
-          <button
-            className={`w-full flex items-center p-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all duration-200 ${
-              isOpen ? "justify-start" : "justify-center"
-            }`}
-          >
-            <Star className="text-yellow-500" size={20} />
-            {isOpen && (
-              <div className="ml-3 flex-1 text-left">
-                <div className="text-sm font-medium text-white">Free Plan</div>
-                <div className="text-xs text-slate-500">
-                  Unlimited conversations
+          <Link to="/plan">
+            <button
+              className={`w-full flex items-center p-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all duration-200 ${
+                isOpen ? "justify-start" : "justify-center"
+              }`}
+            >
+              <Star className="text-yellow-500" size={20} />
+              {isOpen && (
+                <div className="ml-3 flex-1 text-left">
+                  <div className="text-sm font-medium text-white">
+                    Free Plan
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    Unlimited conversations
+                  </div>
                 </div>
-              </div>
-            )}
-          </button>
+              )}
+            </button>
+          </Link>
         </div>
       </div>
 

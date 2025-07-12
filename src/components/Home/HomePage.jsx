@@ -202,15 +202,15 @@ function HomePage() {
                 ))}
               </div>
             </div>
-
-            {/* Chat Input */}
-            <div className="border-t border-slate-700/50 bg-slate-800/80 backdrop-blur-md">
-              <div className="max-w-4xl mx-auto px-6 py-4">
-                <ChatInput onSubmit={handleQuestionSubmit} />
-              </div>
-            </div>
           </div>
         )}
+
+        {/* Chat Input - Single instance that shows for both states */}
+        <div className="border-t border-slate-700/50 bg-slate-800/80 backdrop-blur-md">
+          <div className="max-w-4xl mx-auto px-6 py-4">
+            <ChatInput onSubmit={handleQuestionSubmit} />
+          </div>
+        </div>
       </main>
     </div>
   );

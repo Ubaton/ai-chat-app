@@ -246,9 +246,11 @@ const SettingsPage = () => {
       <header className="fixed top-0 right-0 left-0 z-50">
         <div className="flex items-center justify-between px-6 py-4 bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
-              <img src={LuminLog} alt="Lumin Logo" className="h-6 w-6" />
-            </div>
+            <Link to="/">
+              <button className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
+                <img src={LuminLog} alt="Lumin Logo" className="h-6 w-6" />
+              </button>
+            </Link>
             <div>
               <h1 className="text-xl font-semibold text-white">Settings</h1>
               <p className="text-sm text-slate-400">
@@ -268,8 +270,8 @@ const SettingsPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-20 p-6">
-        <div className="max-w-7xl mx-auto">
+      <main className="pt-24 p-6">
+        <div className="w-full mx-auto">
           <div className="flex gap-6 h-[calc(100vh-8rem)]">
             {/* Sidebar Navigation */}
             <div className="w-80 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
