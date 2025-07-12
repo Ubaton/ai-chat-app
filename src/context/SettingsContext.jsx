@@ -1,10 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-// Create the Settings Context
 const SettingsContext = createContext();
 
-// Default settings configuration
 const defaultSettings = {
   theme: "system",
   language: "auto-detect",
@@ -105,7 +103,6 @@ const defaultSettings = {
   },
 };
 
-// Utility functions for localStorage
 const getStoredSettings = () => {
   try {
     const stored = localStorage.getItem("lumin-settings");
@@ -124,7 +121,6 @@ const saveSettings = (settings) => {
   }
 };
 
-// Chat history utilities
 const getChatHistory = () => {
   try {
     const stored = localStorage.getItem("lumin-chat-history");
@@ -161,7 +157,6 @@ const saveArchivedChats = (chats) => {
   }
 };
 
-// Theme management
 const applyTheme = (theme) => {
   const root = document.documentElement;
 
@@ -176,7 +171,6 @@ const applyTheme = (theme) => {
   }
 };
 
-// Settings Provider Component
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(defaultSettings);
   const [chatHistory, setChatHistory] = useState([]);
@@ -194,7 +188,6 @@ export const SettingsProvider = ({ children }) => {
       setChatHistory(storedChatHistory);
       setArchivedChats(storedArchivedChats);
 
-      // Apply theme
       applyTheme(storedSettings.theme);
 
       setIsLoading(false);
@@ -203,7 +196,6 @@ export const SettingsProvider = ({ children }) => {
     loadSettings();
   }, []);
 
-  // Listen for system theme changes
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
@@ -216,7 +208,6 @@ export const SettingsProvider = ({ children }) => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [settings.theme]);
 
-  // Save settings when they change
   useEffect(() => {
     if (!isLoading) {
       saveSettings(settings);
@@ -226,46 +217,34 @@ export const SettingsProvider = ({ children }) => {
     }
   }, [settings, isLoading]);
 
-  // Save chat history when it changes
   useEffect(() => {
     if (!isLoading) {
       saveChatHistory(chatHistory);
     }
   }, [chatHistory, isLoading]);
 
-  // Save archived chats when they change
   useEffect(() => {
     if (!isLoading) {
       saveArchivedChats(archivedChats);
     }
   }, [archivedChats, isLoading]);
 
-  // Update a specific setting
   const updateSettings = (key, value) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Update nested settings
   const updateNestedSettings = (section, key, value) => {
     setSettings((prev) => ({
       ...prev,
-      [section]: {
-        ...prev[section],
-        [key]: value,
-      },
+      [section]: { ...prev[section], [key]: value },
     }));
   };
 
-  // Reset all settings to defaults
   const resetSettings = () => {
     setSettings(defaultSettings);
     localStorage.removeItem("lumin-settings");
   };
 
-  // Chat management functions
   const addChatToHistory = (chat) => {
     setChatHistory((prev) => [...prev, chat]);
   };
@@ -318,24 +297,19 @@ export const SettingsProvider = ({ children }) => {
     localStorage.removeItem("lumin-archived-chats");
   };
 
-  // User management functions
   const logout = () => {
-    // Clear all user data
     localStorage.removeItem("lumin-settings");
     localStorage.removeItem("lumin-chat-history");
     localStorage.removeItem("lumin-archived-chats");
     localStorage.removeItem("lumin-user-session");
 
-    // Reset state
     setSettings(defaultSettings);
     setChatHistory([]);
     setArchivedChats([]);
 
-    // Redirect to login or refresh page
     window.location.reload();
   };
 
-  // Export settings
   const exportSettings = () => {
     const exportData = {
       settings,
@@ -357,7 +331,6 @@ export const SettingsProvider = ({ children }) => {
     linkElement.click();
   };
 
-  // Import settings
   const importSettings = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -386,18 +359,15 @@ export const SettingsProvider = ({ children }) => {
   };
 
   const contextValue = {
-    // Settings state
     settings,
     isLoading,
 
-    // Settings management
     updateSettings,
     updateNestedSettings,
     resetSettings,
     exportSettings,
     importSettings,
 
-    // Chat management
     chatHistory,
     archivedChats,
     addChatToHistory,
@@ -409,10 +379,8 @@ export const SettingsProvider = ({ children }) => {
     deleteArchivedChat,
     clearArchivedChats,
 
-    // User management
     logout,
 
-    // Theme utilities
     applyTheme,
   };
   return (
@@ -422,8 +390,6 @@ export const SettingsProvider = ({ children }) => {
   );
 };
 
-SettingsProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+SettingsProvider.propTypes = { children: PropTypes.node.isRequired };
 
 export default SettingsContext;
